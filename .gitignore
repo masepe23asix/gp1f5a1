@@ -1,1 +1,3 @@
-vm_desenvolupador
+vm_desenvolupador/.vagrant
+vm_pipeline/.vagrant
+vm_produccio/.vagrant
