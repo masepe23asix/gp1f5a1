@@ -2,7 +2,8 @@ IMATGE_BOX = "debian/bookworm64"
 NOM_NODE = "desenvolupador-gp1f5a1"
 MEMORIA = 2048
 CPUS = 2
-TARGETA_XARXA = "Intel(R) Wireless-AC 9560 160MHz"
+#TARGETA_XARXA = "Intel(R) Wireless-AC 9560 160MHz"
+TARGETA_XARXA = "Realtek PCIe GbE Family Controller"
 Vagrant.configure("2") do |config|
  config.vm.box = IMATGE_BOX
  config.vm.hostname = NOM_NODE
@@ -13,7 +14,7 @@ Vagrant.configure("2") do |config|
  v.cpus = CPUS
  v.customize ['modifyvm', :id, '--clipboard', 'bidirectional']
  end
- config.vm.synced_folder "A:/Jesuites Treballs/Cicle Superior/3r any ASIX/GP1/projectes/gp1f5a1/desenvolupament", "/home/vagrant/desenvolupaments"
+ config.vm.synced_folder "A:/Jesuites Treballs/Cicle Superior/3r any ASIX/GP1/projectes/gp1f5a1", "/home/vagrant/desenvolupaments"
  config.vm.provision "shell", inline: <<-SHELL
  sudo apt-get update -y
  sudo apt-get install -y net-tools
