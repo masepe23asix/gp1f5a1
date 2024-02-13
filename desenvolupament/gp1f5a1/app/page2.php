@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="banner">Banner:</label>
         <input type="text" name="banner" required>
         <br>
-        <!-- altres opcions del formulari aquí -->
+        
         <br>
         <input type="hidden" name="device" value="<?php echo $device; ?>">
         <input type="submit" value="Següent">
