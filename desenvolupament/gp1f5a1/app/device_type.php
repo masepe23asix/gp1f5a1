@@ -9,4 +9,8 @@ echo "<option value='Switch'>Switch</option>";
 echo "</select>";
 echo "<input type='submit' value='Següent'>";
 echo "</form>";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $_SESSION['device_type'] = $_POST['device_type'];
+}
 ?>
