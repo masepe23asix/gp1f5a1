@@ -9,13 +9,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-echo "<h1>Selección del tipo de dispositivo</h1>";
+echo "<h1>Selecció del tipus de dispositiu</h1>";
 echo "<form method='post' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "'>";
-echo "<label for='device_type'>Tipo de dispositivo:</label>";
+echo "<label for='device_type'>Tipus de dispositiu:</label>";
 echo "<select name='device_type'>";
 echo "<option value='Router'>Router</option>";
 echo "<option value='Switch'>Switch</option>";
 echo "</select>";
-echo "<input type='submit' value='Siguiente'>";
+echo "<input type='submit' value='Següent'>";
 echo "</form>";
 ?>

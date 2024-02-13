@@ -1,8 +1,8 @@
 <?php
 session_start();
-echo "<h1>Órdenes de configuración</h1>";
+echo "<h1>Ordres de configuració</h1>";
 
-// Verificar si se enviaron los datos del formulario
+// Verificar si s'han enviat les dades del formulari
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['device_type'])) {
     $_SESSION['hostname'] = $_POST['hostname'];
     $_SESSION['banner'] = $_POST['banner'];
@@ -34,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['device_type'])) {
 
     echo "<pre>$config_commands</pre>";
 } else {
-    echo "No se han recibido datos del formulario o el tipo de dispositivo no está definido.";
+    echo "No s'han rebut dades del formulari o el tipus de dispositiu no està definit.";
 }
 ?>
-
