@@ -2,7 +2,7 @@ version: '3'
 
 services:
   gp1f5a1:
-    image: gp1f5a1:1.0
+    build: .
     expose:
       - "80"
     environment:
