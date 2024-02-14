@@ -1,35 +1,110 @@
 <?php
 session_start();
-echo "<h1>Ordres de configuració</h1>";
+echo "<h1>Ordres de configuració per el " . $_COOKIE['device_type'] . "</h1>";
+
 
 // Verificar si s'han enviat les dades del formulari
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['device_type'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_COOKIE['device_type'])) {
     $_SESSION['hostname'] = $_POST['hostname'];
-    $_SESSION['banner'] = $_POST['banner'];
+    $_SESSION['banner_autoritzats'] = $_POST['banner_autoritzats'];
     $_SESSION['password'] = $_POST['password'];
+    $_SESSION['consola'] = $_POST['consola'];
+    $_SESSION['ip_interface_1'] = $_POST['ip_interface_1'];
+    $_SESSION['mascara_interface_1'] = $_POST['mascara_interface_1'];
+    $_SESSION['ip_interface_2'] = $_POST['ip_interface_2'];
+    $_SESSION['mascara_interface_2'] = $_POST['mascara_interface_2'];
+    $_SESSION['ip_serial_interface_1'] = $_POST['ip_serial_interface_1'];
+    $_SESSION['mascara_serial_interface_1'] = $_POST['mascara_serial_interface_1'];
+    $_SESSION['ip_serial_interface_2'] = $_POST['ip_serial_interface_2'];
+    $_SESSION['mascara_serial_interface_2'] = $_POST['mascara_serial_interface_2'];
 
-    if ($_SESSION['device_type'] == 'Router') {
-        $_SESSION['ip_router'] = $_POST['ip_router'];
-        $_SESSION['serial_router'] = $_POST['serial_router'];
-        $_SESSION['serial_clock'] = $_POST['serial_clock'];
-        $_SESSION['routing'] = $_POST['routing'];
+    if ($_COOKIE['device_type'] == 'Router') {
+        $config_commands = "Router>enable \n";
+        $config_commands .= "Router#conf t \n";
+        $config_commands .= "Router(config)# hostname " . $_SESSION['hostname'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config)#line console " . $_SESSION['consola'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-line)#password " . $_SESSION['password'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-line)#exit \n";
 
-        $config_commands = "Router(config)# hostname " . $_SESSION['hostname'] . "\n";
-        $config_commands .= "Router(config)# banner motd " . $_SESSION['banner'] . "\n";
-        $config_commands .= "Router(config)# enable secret " . $_SESSION['password'] . "\n";
-        $config_commands .= "Router(config)# ip address " . $_SESSION['ip_router'] . "\n";
-        $config_commands .= "Router(config)# serial " . $_SESSION['serial_router'] . "\n";
-        $config_commands .= "Router(config)# clock rate " . $_SESSION['serial_clock'] . "\n";
-        $config_commands .= "Router(config)# ip routing " . $_SESSION['routing'] . "\n";
-    } elseif ($_SESSION['device_type'] == 'Switch') {
-        $_SESSION['ip_switch'] = $_POST['ip_switch'];
-        $_SESSION['time'] = $_POST['time'];
+        $config_commands .= $_SESSION['hostname'] . "(config)#line vty " . $_SESSION['line_vty'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-line)#password " . $_SESSION['password'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-line)#exit \n";
 
-        $config_commands = "Switch(config)# hostname " . $_SESSION['hostname'] . "\n";
-        $config_commands .= "Switch(config)# banner motd " . $_SESSION['banner'] . "\n";
-        $config_commands .= "Switch(config)# enable secret " . $_SESSION['password'] . "\n";
-        $config_commands .= "Switch(config)# ip address " . $_SESSION['ip_switch'] . "\n";
-        $config_commands .= "Switch(config)# clock set " . $_SESSION['time'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config)# banner motd \"" . $_SESSION['banner_autoritzats'] . "\"\n";
+        $config_commands .= $_SESSION['hostname'] . "(config)#exit \n";
+
+        $config_commands .= $_SESSION['hostname'] . "#clock set " . $_SESSION['serial_clock'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "#show clock \n";
+
+        $config_commands .= $_SESSION['hostname'] . "#show ip interface brief \n";
+        $config_commands .= $_SESSION['hostname'] . "#conf t \n";
+        $config_commands .= $_SESSION['hostname'] . "(config)# ip routing \n";
+
+        $config_commands .= $_SESSION['hostname'] . "(config)#interface fastethernet0/0 \n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#ip address" . $_SESSION['ip_interface_1'] . $_SESSION['mascara_interface_1'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#no shutdown \n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#exit \n";
+
+        $config_commands .= $_SESSION['hostname'] . "(config)#interface fastethernet0/1 \n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#ip address " . $_SESSION['ip_interface_2'] . $_SESSION['mascara_interface_2'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#no shutdown \n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#exit \n";
+
+        $config_commands .= $_SESSION['hostname'] . "(config)#interface serial0/3/0 \n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#ip address " . $_SESSION['ip_serial_interface_1'] . $_SESSION['mascara_serial_interface_1'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#no shutdown \n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#exit \n";
+
+        $config_commands .= $_SESSION['hostname'] . "(config)#interface serial0/3/1 \n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#ip address " . $_SESSION['ip_serial_interface_2'] . $_SESSION['mascara_serial_interface_2'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#no shutdown \n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#exit \n";
+        
+        $config_commands .= $_SESSION['hostname'] . "(config)#show ip interface brief \n";
+        $config_commands .= $_SESSION['hostname'] . "(config)#show ip route \n";
+        $config_commands .= $_SESSION['hostname'] . "(config)#copy running-config startup-config \n";
+        
+        $config_commands .= "Router#conf t \n";
+
+        $config_commands .= $_SESSION['hostname'] . "(config)# banner motd \"" . $_SESSION['banner'] . "\"\n";
+        $config_commands .= $_SESSION['hostname'] . "(config)#exit \n";
+        $config_commands .= $_SESSION['hostname'] . "#exit \n";
+        $config_commands .= $_SESSION['hostname'] . "\n";
+
+    } elseif ($_COOKIE['device_type'] == 'Switch') {
+        $config_commands = "Switch>enable \n";
+        $config_commands .= "Switch>#conf t \n";
+        $config_commands .= "Switch(config)# hostname " . $_SESSION['hostname'] . "\n";
+
+        $config_commands .= $_SESSION['hostname'] . "#enable secret " . $_SESSION['password'] . "\n";
+
+        $config_commands .= $_SESSION['hostname'] . "(config)#line vty " . $_SESSION['line_vty'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-line)#password " . $_SESSION['password'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-line)#exit \n";
+
+        $config_commands .= $_SESSION['hostname'] . "(config)#line console " . $_SESSION['consola'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-line)#password " . $_SESSION['password'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-line)#exit \n";
+
+        $config_commands .= $_SESSION['hostname'] . "(config-line)#login \n";
+        $config_commands .= $_SESSION['hostname'] . "(config-line)#exit \n";
+
+        $config_commands .= $_SESSION['hostname'] . "(config)# banner motd \"" . $_SESSION['banner_autoritzats'] . "\"\n";
+        $config_commands .= $_SESSION['hostname'] . "(config)#exit \n";
+
+        $config_commands .= $_SESSION['hostname'] . "#clock set " . $_SESSION['serial_clock'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "#show clock \n";
+        $config_commands .= $_SESSION['hostname'] . "#conf t \n";
+
+        $config_commands .= $_SESSION['hostname'] . "(config)#interface vlan 1 \n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#ip address" . $_SESSION['ip_interface_1'] . $_SESSION['mascara_interface_1'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#ip default-gateway" . $_SESSION['ip_serial_interface_1'] . "\n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#no shutdown \n";
+        $config_commands .= $_SESSION['hostname'] . "(config-if)#exit \n";
+
+        $config_commands .= $_SESSION['hostname'] . "(config)#show ip interface vlan 1 \n";
+        $config_commands .= $_SESSION['hostname'] . "(config)#copy running-config startup-config \n";
+
     }
 
     echo "<pre>$config_commands</pre>";
