@@ -119,6 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_COOKIE['device_type'])) {
 
         $config_commands .= $_SESSION['hostname'] . "(config)#show ip interface vlan 1 \n";
         $config_commands .= $_SESSION['hostname'] . "(config)#copy running-config startup-config \n";
+    
 
     }
 
