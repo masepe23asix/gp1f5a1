@@ -2,8 +2,8 @@ IMATGE_BOX = "debian/bookworm64"
 NOM_NODE = "produccio-gp1f5a1"
 MEMORIA = 2048
 CPUS = 2
-#TARGETA_XARXA = "Intel(R) Wireless-AC 9560 160MHz"
-TARGETA_XARXA = "Realtek PCIe GbE Family Controller"
+TARGETA_XARXA = "Intel(R) Wireless-AC 9560 160MHz"
+#TARGETA_XARXA = "Realtek PCIe GbE Family Controller"
 Vagrant.configure("2") do |config|
  config.vm.box = IMATGE_BOX
  config.vm.hostname = NOM_NODE

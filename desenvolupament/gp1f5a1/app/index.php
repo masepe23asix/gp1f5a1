@@ -13,8 +13,8 @@ echo "input[type='submit']:hover {background-color: #2980b9;}";
 echo "</style>";
 echo "</head>";
 echo "<body>";
-echo "<p>Fase C</p>"
 echo "<h1>Benvingut a l'aplicació de configuració de CISCO</h1>";
+echo "<h1>Proba per la fase C</h1>";
 echo "<p>Aquesta aplicació et guiarà a través del procés de configuració inicial d'un dispositiu CISCO.</p>";
 echo "<form method='post' action='device_type.php'>";
 echo "<input type='submit' value='Començar'>";
